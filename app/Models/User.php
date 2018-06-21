@@ -28,14 +28,20 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the job applications associated with the user.
+     * Returns User-Jobs Relation
+     * 
+     * @return Relation Relationship
      */
-
     public function appliedJobs()
     {
         return $this->belongsToMany(Job::class,'applications')->withTimestamps();
     }
 
+    /**
+     * Returns User-Jobs Relation
+     * 
+     * @return Relation Relationship
+     */
     public function createdJobs()
     {
         return $this->hasMany(Job::class);

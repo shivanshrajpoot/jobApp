@@ -14,7 +14,8 @@ class JobTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-     
+        'recruiter',
+        'applicants'
     ];
 
     /**
@@ -23,6 +24,7 @@ class JobTransformer extends TransformerAbstract
      * @var array
      */
     protected $defaultIncludes = [
+
     ];
 
 
@@ -37,9 +39,32 @@ class JobTransformer extends TransformerAbstract
       return [
         'title' => $job->title,
         'description' => $job->description,
-        'applicants' => $job->applicants,
-        'recruiter' => $job->recruiter
+        'is_applied' => $job->is_applied,
       ];
+    }
+
+    /**
+     * includes recruiter
+     * ?include=recruiter
+     * 
+     * @param  App\Models\Job  $job
+     * @return Eloquent        Item
+     */
+    public function includeRecruiter(Job $job)
+    {
+        return $this->item($job->recruiter, new UserTransformer);
+    }
+
+    /**
+     * includes applicants
+     * ?include=applicants
+     * 
+     * @param  App\Models\Job  $job
+     * @return Eloquent        Collection
+     */
+    public function includeApplicants(Job $job)
+    {
+        return $this->collection($job->applicants, new UserTransformer);
     }
 
 }

@@ -4,20 +4,22 @@ namespace App\Http\Controllers\Api\v1;
 
 use JWTAuth;
 use App\Services\JobService;
+use App\Services\UserService;
 use App\Transformers\JobTransformer;
 use App\Http\Controllers\Api\ApiController;
 
 class JobController extends ApiController {
 
-	function __construct(JobService $jobService)
+	function __construct(JobService $jobService, UserService $userService)
 	{
 		parent::__construct();
 
 		$this->jobService = $jobService;
+		$this->userService = $userService;
 
 		$this->middleware('jwt.auth', [
 			'only' => [
-				'create','update','delete','apply','revertApply','applied','created','index'
+				'create','update','delete','apply','revertApply','applied','created'
 			]
 		]);
 	}
@@ -29,9 +31,11 @@ class JobController extends ApiController {
 	 */
 	public function index()
 	{
-		$jobs = $this->jobService->getAllJobs($this->perPage, auth()->user());
+		$user = $this->userService->getUserFromToken();
+		
+		$jobs = $this->jobService->getAllJobs($this->perPage, $user);
 
-		return $this->respondWithPagination($jobs->with('recruiter')->paginate($this->perPage), request()->all(), new JobTransformer);
+		return $this->respondWithPagination($jobs, request()->all(), new JobTransformer);
 	}
 
 	/**

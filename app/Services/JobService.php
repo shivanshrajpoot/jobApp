@@ -24,14 +24,13 @@ class JobService
      * 
      * @return App\Models\Job Job Collection
      */
-    public function getAllJobs($perPage,$user=NULL)
-    {
-        $user_id = NULL;
-        if($user){
-            if ($user->type === 1)  throw new AccessException('Not Authorized.');
-            $user_id = $user->id;
+    public function getAllJobs($perPage, $user = NULL)
+    {    
+        if ($user && $user->type === 1) {
+            throw new AccessException('Not Authorized.');
         }
-        $jobs = $this->jobRepo->getAllPaginatedJobs($perPage,$user_id);
+
+        $jobs = $this->jobRepo->getAllPaginatedJobs($perPage);
 
         return $jobs; 
     }
@@ -44,17 +43,18 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\Job         Jobs
      */
-    public function createJob($inputs,$user)
+    public function createJob($inputs, $user)
     {
         // Check if the user is recruiter
-        if ($user->type !== 1) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) throw new AccessException('Not Authorized.');
 
         $this->validator->fire($inputs, 'create', []);
             
         $job = new Job([
-                    'title'       => $inputs['title'],
-                    'description' => $inputs['description'],
-                ]);
+            'title'       => $inputs['title'],
+            'description' => $inputs['description'],
+        ]);
+
         $job->recruiter()->associate($user);
 
         $job->save();
@@ -69,10 +69,10 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\Job         Jobs
      */
-    public function updateJob($inputs,$user)
+    public function updateJob($inputs, $user)
     {
         // Check if the user is recruiter
-        if ($user->type !== 1) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) throw new AccessException('Not Authorized.');
 
         $this->validator->fire($inputs, 'update', []);
 
@@ -80,7 +80,7 @@ class JobService
 
         $createdJobs = $user->createdJobs()->pluck('id')->toArray();
 
-        if(!in_array($job_id, $createdJobs)) throw new AccessException('Job does not exists.'); 
+        if(in_array($job_id, $createdJobs) === false) throw new AccessException('Job does not exists.'); 
 
         $job = Job::find($job_id);
         $job->title = array_get($inputs, 'title');
@@ -97,10 +97,10 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\User Instance of User-Job Relation
      */
-    public function deleteJob($inputs,$user)
+    public function deleteJob($inputs, $user)
     {
         // Check if the user is recruiter
-        if ($user->type !== 1) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) throw new AccessException('Not Authorized.');
 
         $this->validator->fire($inputs, 'delete', []);
 
@@ -127,7 +127,7 @@ class JobService
     public function applyForJob($inputs, $user)
     {
         // Check if the user is job seeker
-        if ($user->type !== 2) throw new AccessException('Not Authorized.');
+        if ($user->type === 1) throw new AccessException('Not Authorized.');
 
         $this->validator->fire($inputs, 'apply', []);
         
@@ -153,7 +153,7 @@ class JobService
     public function revertApplication($inputs, $user)
     {
         // Check if the user is job seeker
-        if ($user->type !== 2) throw new AccessException('Not Authorized.');
+        if ($user->type === 1) throw new AccessException('Not Authorized.');
 
         $this->validator->fire($inputs, 'apply', []);
         
@@ -172,14 +172,14 @@ class JobService
     public function allCreatedJobs($user)
     {
         // Check if the user is recruiter
-        if ($user->type !== 1) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) throw new AccessException('Not Authorized.');
         return $user->createdJobs();
     }
 
     public function allAppliedJobs($user)
     {
         // Check if the user is recruiter
-        if ($user->type !== 2) throw new AccessException('Not Authorized.');
+        if ($user->type === 1) throw new AccessException('Not Authorized.');
         return $user->appliedJobs();
     }
 }

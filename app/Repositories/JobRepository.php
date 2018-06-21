@@ -17,9 +17,9 @@ class JobRepository
 	 * @param  Integer $user_id User Id
 	 * @return App\Models\Job   Collection of Job
 	 */
-	public function getAllPaginatedJobs($perPage,$user_id)
+	public function getAllPaginatedJobs($perPage)
 	{
-		return $user_id ? Job::whereNotIn('user_id',[$user_id]) : Job::all();
+		return Job::paginate($perPage);
 	}
 
 }

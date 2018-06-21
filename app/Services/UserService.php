@@ -4,12 +4,13 @@ namespace App\Services;
 
 use Hash;
 use Mail;
+use JWTAuth;
 use App\Models\User;
-use App\Mail\UserRegistered;
 use App\Mail\ResetPassword;
+use App\Mail\UserRegistered;
 use App\Exceptions\LoginException;
 use App\Validations\UserValidator;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
+use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserService {
 
@@ -145,6 +146,21 @@ class UserService {
         Mail::to($user)->send(new ResetPassword($user));
 
         return $user;
+    }
+
+    /**
+     * Returns user if found
+     *      
+     * @return App\Models\User $user
+     */
+    public function getUserFromToken()
+    {
+        $user = NULL;
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+        } catch (JWTException $e) {
+            return $user;
+        }
     }
 
 }

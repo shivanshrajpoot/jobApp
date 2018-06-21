@@ -40,14 +40,4 @@ class UserTransformer extends TransformerAbstract
       ];
     }
 
-    public function includeForumComments(User $user)
-    {
-      return $this->collection($user->forum_comments()->sort()->get(), new ForumCommentTransformer);
-    }
-
-    public function includeForumPosts(User $user)
-    {
-      return $this->collection($user->forum_posts()->sort()->get(), new ForumPostTransformer);
-    }
-
 }
