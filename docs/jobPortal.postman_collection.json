@@ -1,0 +1,484 @@
+{
+	"info": {
+		"_postman_id": "3808400a-cfe3-47ab-a55e-47add0d28871",
+		"name": "jobPortal",
+		"description": "Demo Job Portal Laravel App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"description": "",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c4e26fbb-bc52-4b46-ae68-85f653618530",
+								"type": "text/javascript",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"if (jsonData.data.token) {",
+									"    pm.environment.set(\"token\", jsonData.data.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\" : \"seeker@gmail.com\",\n\t\"password\":\"abc123\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/sign-in",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"sign-in"
+							]
+						},
+						"description": "Sign In using credentials."
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ef19ca90-a8de-4c21-8c2f-9cb72e21c925",
+								"type": "text/javascript",
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"if (jsonData.data.token) {",
+									"    pm.environment.set(\"token\", jsonData.data.token);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Seeker One\",\n\t\"email\" : \"seekerone@gmail.com\",\n\t\"type\":2,\n\t\"password\":\"abcdef\",\n\t\"password_confirmation\":\"abcdef\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/register",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"register"
+							]
+						},
+						"description": "Register a user."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"password\":\"abc123\",\n\t\"password_confirmation\":\"abc123\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/update-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"update-password"
+							]
+						},
+						"description": "Update User Password."
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"provider@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/forgot-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"forgot-password"
+							]
+						},
+						"description": "Sends an email containing OTP to registered user."
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password With OTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\":\"seeker@gmail.com\",\n\t\"password\":\"abc123\",\n\t\"password_confirmation\":\"abc123\",\n\t\"otp\":\"6050\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/reset-password-otp",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"reset-password-otp"
+							]
+						},
+						"description": "Reset password using OTP"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job",
+			"description": null,
+			"item": [
+				{
+					"name": "All Jobs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{api_url}}/jobs?include=recruiter",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"jobs"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "recruiter"
+								}
+							]
+						},
+						"description": "Shows all jobs.\nIf logged in shows jobs for which applied earlier."
+					},
+					"response": []
+				},
+				{
+					"name": "View Created Jobs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{api_url}}/view-created?include=applicants",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"view-created"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "applicants"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Applied Jobs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{api_url}}/view-applied",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"view-applied"
+							]
+						},
+						"description": "View user associated job applications."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"title\":\"Latest Job\",\n\t\"description\":\"This is the latest post method\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/create-job",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"create-job"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"23\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/delete-job",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"delete-job"
+							]
+						},
+						"description": "Deletes a job by job_id."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\":\"2\",\n\t\"title\":\"Test Update\",\n\t\"description\":\"Updated Description Updated Description Updated Description Updated Description\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/update-job",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"update-job"
+							]
+						},
+						"description": "Updates a Job"
+					},
+					"response": []
+				},
+				{
+					"name": "Apply For Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"job_id\":\"21\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/apply",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"apply"
+							]
+						},
+						"description": "Apply for a new job with job_id."
+					},
+					"response": []
+				},
+				{
+					"name": "WIthdraw Application For Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"job_id\":\"21\"\n}"
+						},
+						"url": {
+							"raw": "{{api_url}}/undo-application",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"undo-application"
+							]
+						},
+						"description": "Withdraw job application using job_id."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

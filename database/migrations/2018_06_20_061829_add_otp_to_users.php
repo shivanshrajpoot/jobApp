@@ -14,7 +14,7 @@ class AddOtpToUsers extends Migration
     public function up()
     {
         Schema::table('users', function($table) {
-            $table->integer('otp')->default(NULL);
+            $table->integer('otp')->nullable()
         });
     }
 

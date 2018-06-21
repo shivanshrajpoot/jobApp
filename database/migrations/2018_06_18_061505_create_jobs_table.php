@@ -17,7 +17,7 @@ class CreateJobsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->integer('user_id');
+            $table->integer('user_id')->nullable();;
             $table->timestamps();
         });
     }
