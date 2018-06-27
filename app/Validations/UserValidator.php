@@ -45,7 +45,8 @@ class UserValidator extends Validator
                 $rules = [
                   'name'        => 'required',
                   'email'       => 'required|email|unique:users',
-                  'password'    => 'required|confirmed|min:6'
+                  'password'    => 'required|confirmed|min:6',
+                  'type'        => 'required|in:1,2'
                 ];
                 break;
 

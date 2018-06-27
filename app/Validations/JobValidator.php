@@ -40,7 +40,7 @@ class JobValidator extends Validator
         switch($type) {
             case 'create':
                 $rules = [
-                    'title'       => 'required|min:8|max:200',
+                    'title'       => 'required|min:6|max:50',
                     'description' => 'required|min:25|max:500'
                 ];
                 break;

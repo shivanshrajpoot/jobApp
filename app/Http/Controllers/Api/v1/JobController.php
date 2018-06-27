@@ -47,9 +47,9 @@ class JobController extends ApiController {
 	{
 		$inputs = request()->all();
 
-		$jobs = $this->jobService->createJob($inputs, auth()->user());
+		$job = $this->jobService->createJob($inputs, auth()->user());
 
-		return $this->respondWithPagination($jobs->with('applicants')->paginate($this->perPage), $inputs, new JobTransformer);
+		return $this->respondWithItem($job, new JobTransformer);
 	}
 
 	/**

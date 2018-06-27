@@ -59,7 +59,7 @@ class JobService
 
         $job->save();
 
-        return $user->createdJobs();   
+        return $job;   
     }
 
     /**

@@ -36,11 +36,12 @@ class JobTransformer extends TransformerAbstract
      */
     public function transform(Job $job)
     {
-      return [
-        'title' => $job->title,
-        'description' => $job->description,
-        'is_applied' => $job->is_applied,
-      ];
+        return [
+            'id'=>$job->id,
+            'title' => $job->title,
+            'description' => $job->description,
+            'is_applied' => $job->is_applied,
+        ];
     }
 
     /**
