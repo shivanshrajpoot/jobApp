@@ -159,8 +159,11 @@ class UserService {
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (JWTException $e) {
-            return $user;
+            return NULL;
         }
+        
+        return $user;
+
     }
 
 }

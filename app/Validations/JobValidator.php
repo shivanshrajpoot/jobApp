@@ -21,6 +21,9 @@ class JobValidator extends Validator
         $messages = [];
 
         switch($type) {
+            case 'slug':
+                $messages = ['Slug is invalid.'];
+                break;
             default:
                 break;
         }
@@ -44,14 +47,15 @@ class JobValidator extends Validator
                     'description' => 'required|min:25|max:500'
                 ];
                 break;
-            case 'delete':
-                $rules = ['id'    => 'required|exists:jobs'];
-                break;
             case 'update':
-                $rules = [
-                    'id'          => 'required|exists:jobs',
+                $rules = [  
                     'title'       => 'min:8|max:200',
                     'description' => 'min:25|max:500'
+                ];
+                break;
+            case 'slug':
+                $rules = [  
+                    'slug'       => 'required|exists:jobs',
                 ];
                 break;
         }

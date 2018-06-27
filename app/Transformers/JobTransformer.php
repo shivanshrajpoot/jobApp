@@ -37,8 +37,8 @@ class JobTransformer extends TransformerAbstract
     public function transform(Job $job)
     {
         return [
-            'id'=>$job->id,
             'title' => $job->title,
+            'slug' => $job->slug,
             'description' => $job->description,
             'is_applied' => $job->is_applied,
         ];
@@ -53,7 +53,9 @@ class JobTransformer extends TransformerAbstract
      */
     public function includeRecruiter(Job $job)
     {
-        return $this->item($job->recruiter, new UserTransformer);
+        if($job->recruiter){
+           return $this->item($job->recruiter, new UserTransformer);
+        }
     }
 
     /**

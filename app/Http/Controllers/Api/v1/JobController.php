@@ -32,7 +32,7 @@ class JobController extends ApiController {
 	public function index()
 	{
 		$user = $this->userService->getUserFromToken();
-		
+
 		$jobs = $this->jobService->getAllJobs($this->perPage, $user);
 
 		return $this->respondWithPagination($jobs, request()->all(), new JobTransformer);
@@ -57,13 +57,14 @@ class JobController extends ApiController {
 	 * 
 	 * @return JsonResponse
 	 */
-	public function update()
+	public function update($slug)
 	{
 		$inputs = request()->all();
 
-		$jobs = $this->jobService->updateJob($inputs, auth()->user());
+		$job = $this->jobService->getJobBySlug($slug);
+		$job = $this->jobService->updateJob($job, auth()->user(), $inputs);
 
-		return $this->respondWithPagination($jobs->with('applicants')->paginate($this->perPage), $inputs, new JobTransformer);
+		return $this->respondWithItem($job, new JobTransformer);
 	}
 
 	/**
@@ -71,13 +72,14 @@ class JobController extends ApiController {
 	 * 
 	 * @return void
 	 */
-	public function delete()
+	public function delete($slug)
 	{
 		$inputs = request()->all();
 
-		$jobs = $this->jobService->deleteJob($inputs, auth()->user());
+		$job = $this->jobService->getJobBySlug($slug);
+		$this->jobService->deleteJob($job, auth()->user(), $inputs);
 
-		return $this->respondWithPagination($jobs->with('applicants')->paginate($this->perPage), $inputs, new JobTransformer);
+		return response()->success(['message' => 'Deleted Successfully.']);
 	}
 
 	/**
@@ -85,15 +87,15 @@ class JobController extends ApiController {
 	 * 
 	 * @return JsonResponse
 	 */
-	public function apply()
+	public function apply($slug)
 	{
 		$user = auth()->user();
 
-		$inputs = request()->all();
+		$job = $this->jobService->getJobBySlug($slug);
 
-		$jobs = $this->jobService->applyForJob($inputs,$user);
+		$this->jobService->applyForJob($job, $user);
 
-		return $this->respondWithPagination($jobs->paginate($this->perPage), $inputs, new JobTransformer);
+		return response()->success(['message' => 'Applied Successfully.']);
 	}
 
 	/**
@@ -101,15 +103,15 @@ class JobController extends ApiController {
 	 * 
 	 * @return JsonResponse
 	 */
-	public function revertApply()
+	public function revertApply($slug)
 	{
 		$user = auth()->user();
 
-		$inputs = request()->all();
+		$job = $this->jobService->getJobBySlug($slug);
 
-		$jobs = $this->jobService->revertApplication($inputs,$user);
+		$this->jobService->revertApplication($job, $user);
 
-		return $this->respondWithPagination($jobs->paginate($this->perPage), $inputs, new JobTransformer);
+		return response()->success(['message' => 'Reverted Successfully.']);
 	}
 
 	/**

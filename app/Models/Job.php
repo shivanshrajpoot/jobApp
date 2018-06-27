@@ -5,14 +5,31 @@ namespace App\Models;
 use JWTAuth;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Job extends Model 
 {
+	use Sluggable;
+
 	protected $fillable = [
 		'title',
 		'description',
 		'user_id'
 	];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
 	/**
 	 * Returns Job-Applicants Relation

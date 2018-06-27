@@ -19,12 +19,20 @@ class ResponseMacroServiceProvider extends ServiceProvider
 
       $code = is_null($code) ? $status : $code;
 
-      return Response::json([
+      $response = [
         'success'  => true,
         'code' => $code,
         'data' => array_except($data, 'meta'),
-        'meta' => array_get($data, 'meta')
-      ], $status);
+      ];
+
+      $meta = array_get($data, 'meta');
+
+      if($meta) 
+      {
+        $response['meta'] = $meta;
+      }
+
+      return Response::json($response, $status);
     });
 
     Response::macro('error', function ($errors, $status = 400, $code = null) {

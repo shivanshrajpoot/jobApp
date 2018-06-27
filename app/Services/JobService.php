@@ -69,25 +69,32 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\Job         Jobs
      */
-    public function updateJob($inputs, $user)
+    public function updateJob($job, $user, $inputs)
     {
         // Check if the user is recruiter
         if ($user->type === 2) throw new AccessException('Not Authorized.');
-
         $this->validator->fire($inputs, 'update', []);
-
-        $job_id = array_get($inputs, 'id');
 
         $createdJobs = $user->createdJobs()->pluck('id')->toArray();
 
-        if(in_array($job_id, $createdJobs) === false) throw new AccessException('Job does not exists.'); 
+        if(in_array($job->id, $createdJobs) === false) throw new AccessException('Job does not exists.'); 
 
-        $job = Job::find($job_id);
         $job->title = array_get($inputs, 'title');
         $job->description = array_get($inputs, 'description');
         $job->save();
 
-        return $user->createdJobs();   
+        return $job;   
+    }
+
+    /**
+     * Returns Job
+     * @param  string $slug  Job Slug
+     * @return Eloquent       App\Model\Job
+     */
+    public function getJobBySlug($slug)
+    {
+        $this->validator->fire(['slug'=>$slug], 'slug', []);
+        return $this->jobRepo->getJobBySlug($slug);
     }
 
     /**
@@ -97,24 +104,17 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\User Instance of User-Job Relation
      */
-    public function deleteJob($inputs, $user)
+    public function deleteJob($job, $user, $inputs)
     {
         // Check if the user is recruiter
         if ($user->type === 2) throw new AccessException('Not Authorized.');
 
-        $this->validator->fire($inputs, 'delete', []);
-
-        $job_id = array_get($inputs, 'id');
-
         $createdJobs = $user->createdJobs()->pluck('id')->toArray();
 
-        if(!in_array($job_id, $createdJobs)) throw new AccessException('Job does not exists.'); 
+        if(!in_array($job->id, $createdJobs)) throw new AccessException('Job does not exists.'); 
 
-        $job = Job::find($job_id);
         $job->recruiter()->dissociate($user);
         $job->save();
-
-        return $user->createdJobs();   
     }
 
     /**
@@ -124,23 +124,17 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\Job         Jobs
      */
-    public function applyForJob($inputs, $user)
+    public function applyForJob($job, $user)
     {
         // Check if the user is job seeker
         if ($user->type === 1) throw new AccessException('Not Authorized.');
 
-        $this->validator->fire($inputs, 'apply', []);
-        
-        $job_id = array_get($inputs, 'job_id');
-
-        $hasAlreadyApplied = in_array($job_id, $user->appliedJobs->pluck('id')->toArray());
+        $hasAlreadyApplied = in_array($job->id, $user->appliedJobs->pluck('id')->toArray());
 
         //Check if already applied for the job
         if ($hasAlreadyApplied) throw new AccessException('Already applied.'); 
 
-        $user->appliedJobs()->attach(['job_id'=>$job_id]);
-
-        return $user->appliedJobs();
+        $user->appliedJobs()->attach(['job_id'=>$job->id]);
     }
 
     /**
@@ -150,23 +144,18 @@ class JobService
      * @param  App\Models\User $user   User
      * @return App\Models\Job         Jobs
      */
-    public function revertApplication($inputs, $user)
+    public function revertApplication($job, $user)
     {
         // Check if the user is job seeker
         if ($user->type === 1) throw new AccessException('Not Authorized.');
-
-        $this->validator->fire($inputs, 'apply', []);
         
-        $job_id = array_get($inputs, 'job_id');
 
-        $hasAlreadyApplied = in_array($job_id, $user->appliedJobs->pluck('id')->toArray());
+        $hasAlreadyApplied = in_array($job->id, $user->appliedJobs->pluck('id')->toArray());
 
         //Check if already applied for the job
         if (!$hasAlreadyApplied) throw new AccessException('Not Authorized.'); 
 
-        $user->appliedJobs()->detach(['job_id'=>$job_id]);
-
-        return $user->appliedJobs();
+        $user->appliedJobs()->detach(['job_id'=>$job->id]);
     }
 
     public function allCreatedJobs($user)

@@ -23,10 +23,11 @@ Route::post('/reset-password-otp', 'UserController@updatePasswordWithOtp');
 
 // jobs
 Route::get('/jobs', 'JobController@index');
-Route::post('/apply', 'JobController@apply');
-Route::post('/undo-application', 'JobController@revertApply');
+Route::post('/apply/{slug}', 'JobController@apply');
+Route::patch('/undo-application/{slug}', 'JobController@revertApply');
 Route::post('/create-job', 'JobController@create');
-Route::post('/update-job', 'JobController@update');
-Route::post('/delete-job', 'JobController@delete');
+Route::patch('/update-job/{slug}', 'JobController@update');
+Route::delete('/delete-job/{slug}', 'JobController@delete');
 Route::get('/view-applied', 'JobController@applied');
 Route::get('/view-created', 'JobController@created');
+

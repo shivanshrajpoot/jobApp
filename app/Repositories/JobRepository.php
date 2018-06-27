@@ -12,6 +12,16 @@ class JobRepository
 	protected $model = Job::class;
 
 	/**
+	 * [getJobBySlug description]
+	 * @param  [type] $slug [description]
+	 * @return [type]       [description]
+	 */
+	public function getJobBySlug($slug)
+	{
+		return Job::whereSlug($slug)->first();
+	}
+
+	/**
 	 * Returns All paginated job records
 	 * @param  Integer $perPage Items Per Page
 	 * @param  Integer $user_id User Id
@@ -19,7 +29,7 @@ class JobRepository
 	 */
 	public function getAllPaginatedJobs($perPage)
 	{
-		return Job::paginate($perPage);
+		return Job::whereNotNull('user_id')->paginate($perPage);
 	}
 
 }
