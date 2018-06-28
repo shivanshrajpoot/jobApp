@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Mail;
 use App\Models\Job;
 use App\Models\Application;
 use App\Mail\AppliedForJob;
