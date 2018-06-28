@@ -105,21 +105,27 @@
                       <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">Dear {{$user->name}},</p>
                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;">
-                          Thanks for your application. We are processing your request for the job with following details
+                          Thanks for your application. We are processing your request for the job with following details:
                         </p>
-                        <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
+                        <table border="0" cellpadding="5" cellspacing="0" class="" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;">
                           <tbody>
                             <tr>
                               <td align="left" style="font-family: sans-serif; font-size: 14px; vertical-align: top; padding-bottom: 15px;">
-                                <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
+                                <table border="1" cellpadding="10" cellspacing="0" style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: auto;">
                                   <tbody>
                                     <tr>
-                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; text-align: center;">{{$job->title}}</td>
-                                      <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; text-align: center;">{{$job->description}}</td>
+                                      <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">Title</td>
+                                      <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">Description</td>
                                     </tr>
+                                    <tr>
+                                      <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">{{$job->title}}</td>
+                                      <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">{{$job->description}}</td>
+                                    </tr>
+
                                   </tbody>
                                 </table>
                               </td>
+                              
                             </tr>
                           </tbody>
                         </table>
