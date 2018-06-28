@@ -14,6 +14,7 @@ class AppliedForJob extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+    public $job;
     
     /**
      * Create a new message instance.
