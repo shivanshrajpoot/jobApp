@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Job;
 use App\Models\Application;
+use App\Mail\AppliedForJob;
 use App\Validations\JobValidator;
 use App\Exceptions\AccessException;
 use App\Repositories\JobRepository;
@@ -132,9 +133,11 @@ class JobService
         $hasAlreadyApplied = in_array($job->id, $user->appliedJobs->pluck('id')->toArray());
 
         //Check if already applied for the job
-        if ($hasAlreadyApplied) throw new AccessException('Already applied.'); 
+        if ($hasAlreadyApplied) throw new AccessException('Already applied.');
 
         $user->appliedJobs()->attach(['job_id'=>$job->id]);
+
+        Mail::to($user)->send(new AppliedForJob($user,$job));
     }
 
     /**
