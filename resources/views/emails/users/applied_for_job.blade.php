@@ -118,8 +118,8 @@
                                       <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">Description</td>
                                     </tr>
                                     <tr>
-                                      <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">{{$job->title}}</td>
-                                      <td style="font-family: monospace; font-size: 14px; vertical-align: top; text-align: center;">{{$job->description}}</td>
+                                      <td style="font-family: serif; font-size: 14px; vertical-align: top; text-align: center;">{{$job->title}}</td>
+                                      <td style="font-family: serif; font-size: 14px; vertical-align: top; text-align: center;">{{$job->description}}</td>
                                     </tr>
 
                                   </tbody>
