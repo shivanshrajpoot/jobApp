@@ -31,7 +31,13 @@ class UserController extends ApiController {
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->success(['token' => $token,'name' => $user->name]);
+        return response()->success(
+            [
+                'token' => $token, 
+                'name' => $user->name,
+                'type' => $user->type,
+            ]
+        );
     }
 
     /**
@@ -47,7 +53,13 @@ class UserController extends ApiController {
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->success(['token' => $token, 'name' => $user->name]);
+        return response()->success(
+            [
+                'token' => $token, 
+                'name' => $user->name,
+                'type' => $user->type,
+            ]
+        );
     }
 
     /**
