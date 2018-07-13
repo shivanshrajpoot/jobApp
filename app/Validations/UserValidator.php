@@ -65,10 +65,8 @@ class UserValidator extends Validator
                 $rules = ['email' => 'required|email|exists:users'];
                 break;
 
-            case 'reset-password':
+            case 'update-password':
                 $rules = [
-                    'token'     => 'required',
-                    'email'     => 'required|email|exists:users',
                     'password'  => 'required|confirmed|min:6'
                 ];
                 break;
