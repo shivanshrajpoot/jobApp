@@ -18,6 +18,20 @@ class UserController extends ApiController {
     }
 
     /**
+     * Checks Configuration Of App
+     * 
+     * @return JsonResponse
+     */
+    
+    public function configuration()
+    {   
+        return response()->success([
+            'minimum_version' => config('app.minimum_app_version'),
+            'current_version' => config('app.current_app_version')
+        ]);
+    }
+
+    /**
      * Registers User
      * 
      * @return JsonResponse

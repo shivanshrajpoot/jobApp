@@ -52,7 +52,7 @@ class UserValidator extends Validator
 
             case 'login':
                 $rules = [
-                  'email'       => 'required|email',
+                  'email'       => 'required|email|exists:users',
                   'password'    => 'required|min:6'
                 ];
                 break;
