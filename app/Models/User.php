@@ -34,7 +34,7 @@ class User extends Authenticatable
      */
     public function appliedJobs()
     {
-        return $this->belongsToMany(Job::class,'applications')->withTimestamps();
+        return $this->belongsToMany(Job::class,'applications')->withTimestamps()->latest('applications.created_at');
     }
 
     /**
@@ -44,6 +44,6 @@ class User extends Authenticatable
      */
     public function createdJobs()
     {
-        return $this->hasMany(Job::class);
+        return $this->hasMany(Job::class)->latest('jobs.updated_at','ASC');
     }
 }
