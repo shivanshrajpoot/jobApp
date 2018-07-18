@@ -49,7 +49,7 @@ class JobValidator extends Validator
                 break;
             case 'update':
                 $rules = [  
-                    'title'       => 'min:8|max:200',
+                    'title'       => 'min:6|max:200',
                     'description' => 'min:25|max:500'
                 ];
                 break;
