@@ -29,7 +29,7 @@ class JobRepository
 	 */
 	public function getAllPaginatedJobs($perPage)
 	{
-		return Job::whereNotNull('user_id')->paginate($perPage);
+		return Job::whereNotNull('user_id')->latest()->paginate($perPage);
 	}
 
 }
