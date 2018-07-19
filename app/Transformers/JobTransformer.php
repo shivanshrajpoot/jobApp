@@ -40,7 +40,7 @@ class JobTransformer extends TransformerAbstract
             'title' => $job->title,
             'slug' => $job->slug,
             'description' => $job->description,
-            'is_applied' => $job->is_applied,
+            'isApplied' => $job->is_applied,
             'updatedAt' => $job->updated_at,
             'createdAt' => $job->created_at
         ];
