@@ -48,7 +48,9 @@ class JobService
     public function createJob($inputs, $user)
     {
         // Check if the user is recruiter
-        if ($user->type === 2) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) {
+            throw new AccessException('Not Authorized.');
+        }
 
         $this->validator->fire($inputs, 'create', []);
             
@@ -74,12 +76,17 @@ class JobService
     public function updateJob($job, $user, $inputs)
     {
         // Check if the user is recruiter
-        if ($user->type === 2) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) {
+            throw new AccessException('Not Authorized.');
+        }
+
         $this->validator->fire($inputs, 'update', []);
 
         $createdJobs = $user->createdJobs()->pluck('id')->toArray();
 
-        if(in_array($job->id, $createdJobs) === false) throw new AccessException('Job does not exists.'); 
+        if(in_array($job->id, $createdJobs) === false) {
+            throw new AccessException('Job does not exists.'); 
+        }
 
         $job->title = array_get($inputs, 'title');
         $job->description = array_get($inputs, 'description');
@@ -96,6 +103,7 @@ class JobService
     public function getJobBySlug($slug)
     {
         $this->validator->fire(['slug'=>$slug], 'slug', []);
+
         return $this->jobRepo->getJobBySlug($slug);
     }
 
@@ -109,12 +117,16 @@ class JobService
     public function deleteJob($job, $user, $inputs)
     {
         // Check if the user is recruiter
-        if ($user->type === 2) throw new AccessException('Not Authorized.');
+        if ($user->type === 2) {
+            throw new AccessException('Not Authorized.');
+        }
 
         $createdJobs = $user->createdJobs()->pluck('id')->toArray();
 
-        if(!in_array($job->id, $createdJobs)) throw new AccessException('Job does not exists.'); 
-
+        if(!in_array($job->id, $createdJobs)) {
+            throw new AccessException('Job does not exists.'); 
+        }
+        
         $job->recruiter()->dissociate($user);
         $job->save();
     }
@@ -129,12 +141,16 @@ class JobService
     public function applyForJob($job, $user)
     {
         // Check if the user is job seeker
-        if ($user->type === 1) throw new AccessException('Not Authorized.');
+        if ($user->type === 1) {
+            throw new AccessException('Not Authorized.');
+        }
 
         $hasAlreadyApplied = in_array($job->id, $user->appliedJobs->pluck('id')->toArray());
 
         //Check if already applied for the job
-        if ($hasAlreadyApplied) throw new AccessException('Already applied.');
+        if ($hasAlreadyApplied) {
+            throw new AccessException('Already applied.');
+        }
 
         $user->appliedJobs()->attach(['job_id'=>$job->id]);
 
@@ -151,17 +167,26 @@ class JobService
     public function revertApplication($job, $user)
     {
         // Check if the user is job seeker
-        if ($user->type === 1) throw new AccessException('Not Authorized.');
-        
+        if ($user->type === 1) {
+            throw new AccessException('Not Authorized.');
+        }
 
         $hasAlreadyApplied = in_array($job->id, $user->appliedJobs->pluck('id')->toArray());
 
         //Check if already applied for the job
-        if (!$hasAlreadyApplied) throw new AccessException('Not Authorized.'); 
+        if (!$hasAlreadyApplied) {
+            throw new AccessException('Not Authorized.');
+        } 
 
         $user->appliedJobs()->detach(['job_id'=>$job->id]);
     }
 
+    /**
+     * Returns All Created JObs
+     * 
+     * @param  App\Models\User $user   User
+     * @return App\Models\Job         Jobs
+     */
     public function allCreatedJobs($user)
     {
         // Check if the user is recruiter
@@ -169,6 +194,12 @@ class JobService
         return $user->createdJobs();
     }
 
+    /**
+     * Returns All Applied JObs
+     * 
+     * @param  App\Models\User $user   User
+     * @return App\Models\Job         Jobs
+     */
     public function allAppliedJobs($user)
     {
         // Check if the user is recruiter

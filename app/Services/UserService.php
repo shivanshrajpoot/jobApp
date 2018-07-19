@@ -64,6 +64,7 @@ class UserService {
         {
           throw new LoginException('Invalid Credentials');
         }
+
         return User::whereEmail(array_get($inputs, 'email'))->first();
     }
 
@@ -156,6 +157,7 @@ class UserService {
     public function getUserFromToken()
     {
         $user = NULL;
+        
         try {
             $user = JWTAuth::parseToken()->authenticate();
         } catch (JWTException $e) {
