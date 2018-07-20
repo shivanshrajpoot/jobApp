@@ -84,7 +84,7 @@ class UserController extends ApiController {
      */
     public function updatePassword()
     {
-        $inputs = request()->all();
+        $inputs = request()->all(;
 
         $user = JWTAuth::parseToken()->authenticate();
 
