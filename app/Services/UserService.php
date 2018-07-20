@@ -10,6 +10,7 @@ use App\Mail\ResetPassword;
 use App\Mail\UserRegistered;
 use App\Exceptions\LoginException;
 use App\Validations\UserValidator;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserService {
@@ -57,11 +58,13 @@ class UserService {
         $this->validator->fire($inputs, 'login', []);
 
         $valid = auth()->validate(
-          array_only($inputs, ['email', 'password'])
+            array_only($inputs, ['email', 'password'])
         );
 
         if(!$valid) {
-          throw new LoginException('Invalid Credentials');
+            Log::info('Failed Login Attempt:');
+            Log::info(array_get($inputs, 'email'));
+            throw new LoginException('Invalid Credentials');
         }
 
         return User::whereEmail(array_get($inputs, 'email'))->first();
