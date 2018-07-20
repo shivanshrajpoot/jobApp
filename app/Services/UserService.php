@@ -105,7 +105,7 @@ class UserService {
             if(!$valid) {
                 throw new LoginException('Invalid Old Password');
             }
-            
+
             $user->password = Hash::make(array_get($inputs, 'password'));
 
             $user->save();
@@ -116,7 +116,7 @@ class UserService {
 
             $user = User::whereEmail($inputs['email'])->first();
 
-            if($user->otp == $inputs['otp']){
+            if($user->otp == $inputs['otp']) {
                 
                 $user->otp = NULL;
 
