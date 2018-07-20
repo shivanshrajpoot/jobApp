@@ -72,6 +72,7 @@ class UserController extends ApiController {
                 'token' => $token, 
                 'name' => $user->name,
                 'type' => $user->type,
+                'email' => $user->email,
             ]
         );
     }
