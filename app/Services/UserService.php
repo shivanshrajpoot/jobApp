@@ -60,8 +60,7 @@ class UserService {
           array_only($inputs, ['email', 'password'])
         );
 
-        if(!$valid)
-        {
+        if(!$valid) {
           throw new LoginException('Invalid Credentials');
         }
 
@@ -97,9 +96,16 @@ class UserService {
     public function updateUserPassword($user, $inputs)
     {
         if($user) {
-
             $this->validator->fire($inputs, 'update-password', []);
 
+            $oldPassword = array_get($inputs,'oldPassword');
+            $email = array_get($inputs,'email');
+            $valid = auth()->validate(['email'=>$email,'password'=>$oldPassword]);
+
+            if(!$valid) {
+                throw new LoginException('Invalid Old Password');
+            }
+            
             $user->password = Hash::make(array_get($inputs, 'password'));
 
             $user->save();

@@ -67,7 +67,8 @@ class UserValidator extends Validator
 
             case 'update-password':
                 $rules = [
-                    'password'  => 'required|confirmed|min:6'
+                    'password'  => 'required|confirmed|min:6',
+                    'oldPassword' => 'required|min:6'
                 ];
                 break;
 
