@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+    jobckr_webserver:
+        volumes:
+            - jb_volume_sync:/var/www/html/public:nocopy
+
+volumes:
+    jb_volume_sync:
+        external: true

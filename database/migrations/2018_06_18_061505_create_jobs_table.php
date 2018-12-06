@@ -1,4 +1,4 @@
-<?php
+˜<?php
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -17,7 +17,7 @@ class CreateJobsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('description');
-            $table->integer('user_id')->nullable();;
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }

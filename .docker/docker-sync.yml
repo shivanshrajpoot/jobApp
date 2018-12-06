@@ -1,0 +1,9 @@
+version: 2
+
+options:
+    verbose: true
+syncs:
+    jb_volume_sync:
+        src: ../
+
+        sync_excludes: ['.docker', '.git']

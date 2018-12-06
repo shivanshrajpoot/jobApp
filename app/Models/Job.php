@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Job extends Model 
+class Job extends Model
 {
 	use Sluggable;
 
@@ -17,23 +17,23 @@ class Job extends Model
 		'user_id'
 	];
 
-    /**
-     * Return the sluggable configuration array for this model.
-     *
-     * @return array
-     */
-    public function sluggable()
-    {
-        return [
-            'slug' => [
-                'source' => 'title'
-            ]
-        ];
-    }
+	/**
+	 * Return the sluggable configuration array for this model.
+	 *
+	 * @return array
+	 */
+	public function sluggable()
+	{
+	    return [
+	        'slug' => [
+	            'source' => 'title'
+	        ]
+	    ];
+	}
 
 	/**
-	 * Returns Job-Applicants Relation
-	 * 
+	 * Returns Job-Recruiter Relation
+	 *
 	 * @return Relation Relationship
 	 */
 	public function recruiter()
@@ -43,7 +43,7 @@ class Job extends Model
 
 	/**
 	 * Returns Job-Applicants Relation
-	 * 
+	 *
 	 * @return Relation Relationship
 	 */
 	public function applicants()
@@ -53,7 +53,7 @@ class Job extends Model
 
 	/**
 	 * Returns Job-Applicants Relation
-	 * 
+	 *
 	 * @return Relation Relationship
 	 */
 	public function getUserIdsAttribute()
@@ -64,7 +64,7 @@ class Job extends Model
 
 	/**
 	 * $this->is_applied
-	 * 
+	 *
 	 * @return [type] [description]
 	 */
 	public function getIsAppliedAttribute()
